@@ -17,4 +17,4 @@ jobs:
       script: |
         echo "Hello world! I'm $(whoami) on $(hostname)"
       labels: self-hosted,my-label-1
-    delegates: https://github.com/dwnusbaum/pipeline-library-testing/custom-job.yml
+    delegates: https://github.com/mluzcabrera/prod_test_edge_runners_v0.1/blob/main/.cloudbees/workflows/custom-job.yml

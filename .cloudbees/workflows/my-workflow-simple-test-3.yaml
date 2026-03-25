@@ -20,6 +20,6 @@ jobs:
         echo "${{ vars.mlcbUserName }}"
 
         echo "\033[0;31m CloudBees context \033[0m"
-        echo "${{ toJSON(cloudbees) }}"
+        echo "${{ cloudbees.version }}"
       labels: my-label-1
     delegates: https://github.com/mluzcabrera/prod_test_edge_runners_v0.1/custom-job.yml

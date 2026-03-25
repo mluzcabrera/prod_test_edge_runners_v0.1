@@ -7,6 +7,9 @@ on:
       par1:
         type: string
         default: "mlcb_input_par"
+env:
+  SERVER: production
+
 jobs:
   edge_mlcb-macos-arm64:
     with:
@@ -20,6 +23,9 @@ jobs:
         echo "${{ vars.mlcbUserName }}"
 
         echo "\033[0;31m CloudBees context \033[0m"
-        echo "${{ cloudbees.version }}"
+        echo "${{ cloudbees.version }}
+        
+        echo "\033[0;31m Env context \033[0m"
+        echo "$SERVER"
       labels: my-label-1
     delegates: https://github.com/mluzcabrera/prod_test_edge_runners_v0.1/custom-job.yml

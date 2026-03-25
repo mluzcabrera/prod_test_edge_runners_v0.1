@@ -22,4 +22,4 @@ jobs:
         echo "\033[0;31m CloudBees context \033[0m"
         echo "${{ toJSON(cloudbees) }}"
       labels: my-label-1
-    delegates: https://github.com/dwnusbaum/pipeline-library-testing/custom-job.yml
+    delegates: https://github.com/mluzcabrera/prod_test_edge_runners_v0.1/custom-job.yml

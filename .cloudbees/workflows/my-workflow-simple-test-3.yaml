@@ -11,7 +11,14 @@ env:
   SERVER: production
 
 jobs:
-  edge_mlcb-macos-arm64:
+  normal:
+    steps:
+      - name: My step
+        env:
+          SERVER: development
+        uses: docker://alpine:3.18
+        run: echo "Hello $SERVER" 
+  remoto:
     with:
       script: |
         echo "Hello world! I'm $(whoami) on $(hostname)"
@@ -26,6 +33,6 @@ jobs:
         echo "${{ cloudbees.version }}
         
         echo "\033[0;31m Env context \033[0m"
-        echo "$SERVER"
+        echo "Hello $SERVER"
       labels: my-label-1
     delegates: https://github.com/mluzcabrera/prod_test_edge_runners_v0.1/custom-job.yml

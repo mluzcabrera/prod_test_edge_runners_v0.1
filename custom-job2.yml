@@ -55,7 +55,7 @@ handlers:
       payload = json.dumps({'payload': inner_json})
       ctx = None
       if os.environ.get('DISABLE_TLS_VERIFICATION', '').upper() == 'TRUE': ctx = ssl.create_default_context(); ctx.check_hostname = False; ctx.verify_mode = ssl.CERT_NONE
-      req = urllib.request.Request(os.environ['CALLBACK_URL'], data=payload.encode('utf-8'), headers={{'Content-Type': 'application/json', 'Authorization': 'Bearer ' + os.environ['CALLBACK_TOKEN']}})
+      req = urllib.request.Request(os.environ['CALLBACK_URL'], data=payload.encode('utf-8'), headers={'Content-Type': 'application/json', 'Authorization': 'Bearer ' + os.environ['CALLBACK_TOKEN']})
       urllib.request.urlopen(req, context=ctx)
       '''
       definition = {'steps': [{'command': {'command': ['python3', '-c', wrapper_script]}, 'env': {'env': {'SCRIPT': script, 'CALLBACK_URL': callback_url, 'CALLBACK_TOKEN': os.environ['CALLBACK_TOKEN'], 'DISABLE_TLS_VERIFICATION': os.environ['DISABLE_TLS_VERIFICATION']}}}]}

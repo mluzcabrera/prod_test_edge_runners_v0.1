@@ -33,4 +33,4 @@ jobs:
         echo "\033[0;31m Env context \033[0m"
         echo "Hello $SERVER" 
       labels: my-label-1
-    delegates: https://github.com/mluzcabrera/prod_test_edge_runners_v0.1/custom-job1.yml
+    delegates: https://github.com/mluzcabrera/prod_test_edge_runners_v0.1/custom-job.yml

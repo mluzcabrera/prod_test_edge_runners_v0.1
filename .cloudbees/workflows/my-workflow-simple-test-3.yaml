@@ -21,5 +21,5 @@ jobs:
 
         echo "\033[0;31m CloudBees context \033[0m"
         echo "${{ toJSON(cloudbees) }}"
-      labels: my-label-3
+      labels: my-label-1
     delegates: https://github.com/dwnusbaum/pipeline-library-testing/custom-job.yml

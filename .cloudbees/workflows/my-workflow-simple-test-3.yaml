@@ -17,6 +17,8 @@ jobs:
         uses: docker://alpine:3.18
         run: echo "Hello $SERVER" 
   remoto:
+    env:
+      SERVER: server
     with:
       script: |
         echo "Hello world! I'm $(whoami) on $(hostname)"

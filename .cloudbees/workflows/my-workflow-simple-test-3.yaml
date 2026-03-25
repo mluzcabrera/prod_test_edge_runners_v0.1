@@ -14,8 +14,6 @@ jobs:
   normal:
     steps:
       - name: My step
-        env:
-          SERVER: development
         uses: docker://alpine:3.18
         run: echo "Hello $SERVER" 
   remoto:

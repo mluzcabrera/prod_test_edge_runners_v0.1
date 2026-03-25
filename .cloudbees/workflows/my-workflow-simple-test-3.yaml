@@ -33,22 +33,4 @@ jobs:
         echo "\033[0;31m Env context \033[0m"
         echo "Hello $SERVER" 
       labels: my-label-1
-    delegates: https://github.com/mluzcabrera/prod_test_edge_runners_v0.1/custom-job.yml
-  remoto2:
-    with:
-      script: |
-        echo "Hello world! I'm $(whoami) on $(hostname)"
-        
-        echo "\033[0;31m Inputs context \033[0m"
-        echo "${{ inputs.par1 }}"
-
-        echo "\033[0;31m Vars context \033[0m"
-        echo "${{ vars.mlcbUserName }}"
-
-        echo "\033[0;31m CloudBees context \033[0m"
-        echo "${{ cloudbees.version }}
-        
-        echo "\033[0;31m Env context \033[0m"
-        echo "Hello $SERVER" 
-      labels: my-label-1
     delegates: https://github.com/mluzcabrera/prod_test_edge_runners_v0.1/custom-job2.yml

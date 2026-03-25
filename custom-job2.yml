@@ -52,7 +52,7 @@ handlers:
       print('=== End script output ===')
       status = result.returncode
       inner_json = json.dumps({'status': status, 'logs': output})
-      payload = json.dumps({{'payload': inner_json}})
+      payload = json.dumps({'payload': inner_json})
       ctx = None
       if os.environ.get('DISABLE_TLS_VERIFICATION', '').upper() == 'TRUE': ctx = ssl.create_default_context(); ctx.check_hostname = False; ctx.verify_mode = ssl.CERT_NONE
       req = urllib.request.Request(os.environ['CALLBACK_URL'], data=payload.encode('utf-8'), headers={{'Content-Type': 'application/json', 'Authorization': 'Bearer ' + os.environ['CALLBACK_TOKEN']}})

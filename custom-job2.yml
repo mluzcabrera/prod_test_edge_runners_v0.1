@@ -42,23 +42,23 @@ handlers:
           sys.exit(f'Error extracting org ID from API token: {e}')
       labels = [l.strip() for l in os.environ.get('LABELS', '').split(',') if l.strip()]
       script = os.environ['SCRIPT']
-      wrapper_script = f'''
+      wrapper_script = '''
       import subprocess, json, os, urllib.request, ssl
-      script = {repr(script)}
+      script = os.environ['SCRIPT']
       result = subprocess.run(['sh', '-c', script], capture_output=True, text=True)
       output = result.stdout + result.stderr
       print('=== Begin script output ===')
       print(output)
       print('=== End script output ===')
       status = result.returncode
-      inner_json = json.dumps({{'status': status, 'logs': output}})
+      inner_json = json.dumps({'status': status, 'logs': output})
       payload = json.dumps({{'payload': inner_json}})
       ctx = None
       if os.environ.get('DISABLE_TLS_VERIFICATION', '').upper() == 'TRUE': ctx = ssl.create_default_context(); ctx.check_hostname = False; ctx.verify_mode = ssl.CERT_NONE
       req = urllib.request.Request(os.environ['CALLBACK_URL'], data=payload.encode('utf-8'), headers={{'Content-Type': 'application/json', 'Authorization': 'Bearer ' + os.environ['CALLBACK_TOKEN']}})
       urllib.request.urlopen(req, context=ctx)
       '''
-      definition = {'steps': [{'command': {'command': ['python3', '-c', wrapper_script]}, 'env': {'env': {'CALLBACK_URL': callback_url, 'CALLBACK_TOKEN': os.environ['CALLBACK_TOKEN'], 'DISABLE_TLS_VERIFICATION': os.environ['DISABLE_TLS_VERIFICATION']}}}]}
+      definition = {'steps': [{'command': {'command': ['python3', '-c', wrapper_script]}, 'env': {'env': {'SCRIPT': script, 'CALLBACK_URL': callback_url, 'CALLBACK_TOKEN': os.environ['CALLBACK_TOKEN'], 'DISABLE_TLS_VERIFICATION': os.environ['DISABLE_TLS_VERIFICATION']}}}]}
       request_body = {'organization_id': org_id, 'labels': labels, 'definition': definition}
       ctx = None
       if os.environ.get('DISABLE_TLS_VERIFICATION', '').upper() == 'TRUE': ctx = ssl.create_default_context(); ctx.check_hostname = False; ctx.verify_mode = ssl.CERT_NONE

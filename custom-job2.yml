@@ -42,9 +42,10 @@ handlers:
           sys.exit(f'Error extracting org ID from API token: {e}')
       labels = [l.strip() for l in os.environ.get('LABELS', '').split(',') if l.strip()]
       script = os.environ['SCRIPT']
+      script_b64 = base64.b64encode(script.encode('utf-8')).decode('ascii')
       wrapper_script = '''
-      import subprocess, json, os, urllib.request, ssl
-      script = os.environ['SCRIPT']
+      import subprocess, json, os, urllib.request, ssl, base64
+      script = base64.b64decode(os.environ['SCRIPT_B64']).decode('utf-8')
       result = subprocess.run(['sh', '-c', script], capture_output=True, text=True)
       output = result.stdout + result.stderr
       print('=== Begin script output ===')
@@ -58,7 +59,7 @@ handlers:
       req = urllib.request.Request(os.environ['CALLBACK_URL'], data=payload.encode('utf-8'), headers={'Content-Type': 'application/json', 'Authorization': 'Bearer ' + os.environ['CALLBACK_TOKEN']})
       urllib.request.urlopen(req, context=ctx)
       '''
-      definition = {'steps': [{'command': {'command': ['python3', '-c', wrapper_script]}, 'env': {'env': {'SCRIPT': script, 'CALLBACK_URL': callback_url, 'CALLBACK_TOKEN': os.environ['CALLBACK_TOKEN'], 'DISABLE_TLS_VERIFICATION': os.environ['DISABLE_TLS_VERIFICATION']}}}]}
+      definition = {'steps': [{'command': {'command': ['python3', '-c', wrapper_script]}, 'env': {'env': {'SCRIPT_B64': script_b64, 'CALLBACK_URL': callback_url, 'CALLBACK_TOKEN': os.environ['CALLBACK_TOKEN'], 'DISABLE_TLS_VERIFICATION': os.environ['DISABLE_TLS_VERIFICATION']}}}]}
       request_body = {'organization_id': org_id, 'labels': labels, 'definition': definition}
       ctx = None
       if os.environ.get('DISABLE_TLS_VERIFICATION', '').upper() == 'TRUE': ctx = ssl.create_default_context(); ctx.check_hostname = False; ctx.verify_mode = ssl.CERT_NONE

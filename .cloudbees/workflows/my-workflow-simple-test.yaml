@@ -16,5 +16,5 @@ jobs:
     with:
       script: |
         echo "Hello world! I'm $(whoami) on $(hostname)"
-      labels: self-hosted,my-label-1
+      labels: self-hosted,my-label-3
     delegates: https://github.com/mluzcabrera/prod_test_edge_runners_v0.1/custom-job.yml

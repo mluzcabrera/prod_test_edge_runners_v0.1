@@ -13,12 +13,9 @@ jobs:
       - name: My step
         run: |-
           echo "Hello world! I'm $(whoami) on $(hostname)"
-          echo "\033[0;31m Inputs context \033[0m"
-          echo "${{ inputs.par1 }}"
-          echo "\033[0;31m Vars context \033[0m"
-          echo "${{ vars.mlcbUserName }}"
-          echo "\033[0;31m CloudBees context \033[0m"
-          echo "${{ cloudbees.version }}"
+          echo "Inputs context: ${{ inputs.par1 }}"
+          echo "Vars context: ${{ vars.mlcbUserName }}"
+          echo "CloudBees context: ${{ cloudbees.version }}"
         uses: docker://alpine:3.18
   remoto:
     env:

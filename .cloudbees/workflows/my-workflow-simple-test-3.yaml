@@ -6,21 +6,30 @@ on:
     inputs:
       par1:
         type: string
-        default: "mlcb_input_par"
-
+        default: mlcb_input_par
 jobs:
   normal:
     steps:
       - name: My step
+        run: |-
+          echo "Hello world! I'm $(whoami) on $(hostname)"
+                  
+                  echo "\033[0;31m Inputs context \033[0m"
+                  echo "${{ inputs.par1 }}"
+
+                  echo "\033[0;31m Vars context \033[0m"
+                  echo "${{ vars.mlcbUserName }}"
+
+                  echo "\033[0;31m CloudBees context \033[0m"
+                  echo "${{ cloudbees.version }}"
         uses: docker://alpine:3.18
-        run: echo "Hello world! I'm $(whoami) on $(hostname)" 
   remoto:
     env:
       SERVER: server
     with:
       script: |
         echo "Hello world! I'm $(whoami) on $(hostname)"
-        
+
         echo "\033[0;31m Inputs context \033[0m"
         echo "${{ inputs.par1 }}"
 
@@ -29,6 +38,5 @@ jobs:
 
         echo "\033[0;31m CloudBees context \033[0m"
         echo "${{ cloudbees.version }}"
-        
       labels: my-label-1
     delegates: https://github.com/mluzcabrera/prod_test_edge_runners_v0.1/custom-job.yml

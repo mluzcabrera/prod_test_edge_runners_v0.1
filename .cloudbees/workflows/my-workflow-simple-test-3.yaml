@@ -7,15 +7,13 @@ on:
       par1:
         type: string
         default: "mlcb_input_par"
-env:
-  SERVER: production
 
 jobs:
   normal:
     steps:
       - name: My step
         uses: docker://alpine:3.18
-        run: echo "Hello $SERVER" 
+        run: echo "Hello world! I'm $(whoami) on $(hostname)" 
   remoto:
     env:
       SERVER: server

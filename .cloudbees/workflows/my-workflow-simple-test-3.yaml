@@ -9,15 +9,20 @@ on:
         default: mlcb_input_par
 jobs:
   normal:
+    outputs:
+      hello: ${{ steps.hello-1.outputs.hello }}
     steps:
-      - name: My step
+      - name: Say hello
+        id: hello-1
         run: |-
           echo "Hello world! I'm $(whoami) on $(hostname)"
           echo "Inputs context: ${{ inputs.par1 }}"
           echo "Vars context: ${{ vars.mlcbUserName }}"
           echo "CloudBees context: ${{ cloudbees.version }}"
+          echo "hello world - ${{ vars.vars_1 }}" > $CLOUDBEES_OUTPUTS/hello
         uses: docker://alpine:3.18
-  remoto:
+  remote:
+    needs: normal
     env:
       SERVER: server
     with:
@@ -26,5 +31,6 @@ jobs:
         echo "Inputs context: ${{ inputs.par1 }}"
         echo "Vars context: ${{ vars.mlcbUserName }}"
         echo "CloudBees context: ${{ cloudbees.version }}"
+        echo "Job output access: ${{ needs.normal.outputs.hello }}"
       labels: my-label-1
     delegates: cloudbees-io/edge-custom-job/custom-job.yaml

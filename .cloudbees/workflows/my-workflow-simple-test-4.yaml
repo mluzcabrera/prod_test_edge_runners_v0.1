@@ -1,0 +1,36 @@
+apiVersion: automation.cloudbees.io/v1alpha1
+kind: workflow
+name: My workflow Simple test
+on:
+  workflow_dispatch:
+    inputs:
+      par1:
+        type: string
+        default: mlcb_input_par
+jobs:
+  normal:
+    outputs:
+      hello: ${{ steps.hello-1.outputs.hello }}
+    steps:
+      - name: Say hello
+        id: hello-1
+        run: |-
+          echo "Hello world! I'm $(whoami) on $(hostname)"
+          echo "Inputs context: ${{ inputs.par1 }}"
+          echo "Vars context: ${{ vars.mlcbUserName }}"
+          echo "CloudBees context: ${{ cloudbees.version }}"
+          echo "test output" > $CLOUDBEES_OUTPUTS/hello
+        uses: docker://alpine:3.18
+  remote:
+    needs: normal
+    env:
+      SERVER: server
+    with:
+      script: |
+        echo "Hello world! I'm $(whoami) on $(hostname)"
+        echo "Inputs context: ${{ inputs.par1 }}"
+        echo "Vars context: ${{ vars.mlcbUserName }}"
+        echo "CloudBees context: ${{ cloudbees.version }}"
+        echo "Job output access: ${{ needs.normal.outputs.hello }}"
+      labels: my-label-1
+    delegates: cloudbees-io/edge-custom-job/custom-job.yaml
